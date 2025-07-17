@@ -29,12 +29,12 @@ export default function AccountMaster({ navigation }: any) {
                         <Text style={styles.heading}>Account Master</Text>
                     </LinearGradient> 
                 </SafeAreaView>}
-                <Pressable
+                {/* <Pressable
                     style={styles.add}
                     onPress={() => navigation.navigate("AddAccount")}
                 >
                     <Text style={styles.plusIcon}>+</Text>          
-                </Pressable>
+                </Pressable> */}
                 <View style={styles.searchbar}>
                     <TextInput
                         style={styles.input}
@@ -367,13 +367,13 @@ const styles = StyleSheet.create({
         height: 8
     },    
     add: {
-        backgroundColor: COLORS.primary,
+        backgroundColor: '#cd4a26',
         width: 48,
         height: 48,
         borderRadius: 40,
         position: 'absolute',
         right: 16,
-        bottom: 48,
+        bottom: 120,
         zIndex: 4,
         justifyContent: 'center',
         alignItems: 'center',
