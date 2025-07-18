@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import COLORS from '../../constants/color'
-import { Pressable, StyleSheet, Text, View, ScrollView, Image, TextInput } from 'react-native'
+import { Pressable, StyleSheet, Text, View, ScrollView, Image, TextInput, Button } from 'react-native'
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 import { BACK, UPARROW, DOWNARROW } from '../../utils/imagePath'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -230,22 +230,24 @@ export default function AccountMaster({ navigation }: any) {
                                     <Pressable
                                         style={styles.editButton}
                                     >
-                                        <View>
-                                            <Text style={styles.buttonText}>Edit</Text>
-                                        </View>
+                                        <Feather name="edit-3" color="#fff" size={20} style={{ marginRight: 6 }} />
+                                        <Text style={styles.buttonText}>
+                                            Edit
+                                        </Text>
                                     </Pressable>
                                 </View>
                                 <View style={{ width: '48%' }}>
                                     <Pressable
                                         style={styles.deleteButton}
                                     >
-                                        <View>
-                                            <Text style={styles.buttonText}>Delete</Text>
-                                        </View>
+                                        <Feather name="trash" color="#fff" size={20} style={{ marginRight: 6 }} />                                           
+                                        <Text style={styles.buttonText}>                                            
+                                            Delete
+                                        </Text>                                            
                                     </Pressable>
                                 </View>
                             </View>
-                            {/* <Button title="Close" onPress={() => setIsVisible(false)} /> */}
+                            <Feather name="x" color="#000" size={24} style={styles.close} onPress={() => setIsVisible(false)} />
                         </View>
                     </Modal>
                 </ScrollView>
@@ -397,6 +399,7 @@ const styles = StyleSheet.create({
     modalContent: {
         backgroundColor: COLORS.white,
         padding: 20,
+        paddingTop: 40,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
     },
@@ -433,6 +436,7 @@ const styles = StyleSheet.create({
         height: 48,
         color: COLORS.white,        
         borderRadius: 4,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
@@ -440,7 +444,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: COLORS.white,
         fontSize: 16,
-        fontWeight: '500'
+        fontWeight: '500',
     },
     deleteButton: {
         backgroundColor: COLORS.red,
@@ -448,8 +452,15 @@ const styles = StyleSheet.create({
         height: 48,
         color: COLORS.white,        
         borderRadius: 4,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex'
+    },
+    close: {
+        position: 'absolute',
+        zIndex: 3,
+        top: 16,
+        right: 16
     }
 })

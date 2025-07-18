@@ -50,17 +50,21 @@ export default function MobileAccounting({ navigation }: any) {
                   </Pressable>
                 </View>  
                 <View style={styles.cardView}>
-                  <LinearGradient
-                    colors={['#fff4ec', '#f3f8fb']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={{ paddingTop: 16, paddingRight: 12, paddingBottom: 16, paddingLeft: 12, borderRadius: 7 }}
+                  <Pressable
+                    onPress={() => navigation.navigate("VoucherEntry")}
                   >
-                    <View style={styles.iconCircle}>
-                      <Image source={VOUCHER} style={styles.icon} />
-                    </View>
-                    <Text style={styles.subheading}>{"Voucher \n Entry"}</Text>
-                  </LinearGradient>
+                    <LinearGradient
+                      colors={['#fff4ec', '#f3f8fb']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{ paddingTop: 16, paddingRight: 12, paddingBottom: 16, paddingLeft: 12, borderRadius: 7 }}
+                    >
+                      <View style={styles.iconCircle}>
+                        <Image source={VOUCHER} style={styles.icon} />
+                      </View>
+                      <Text style={styles.subheading}>{"Voucher \n Entry"}</Text>
+                    </LinearGradient>
+                  </Pressable>
                 </View>  
                 <View style={styles.cardView}>
                   <LinearGradient

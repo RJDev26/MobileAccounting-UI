@@ -13,7 +13,7 @@ const COLORS = {
     darkBlue: '#004c80',
     lightBlue: '#f3f9fe',
     // blueText: '#1E83EC'
-    red: '#f45652'
+    red: '#be2b2c'
 }
 
 export default COLORS
