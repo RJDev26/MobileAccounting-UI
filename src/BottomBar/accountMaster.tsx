@@ -21,7 +21,7 @@ export default function AccountMaster({ navigation }: any) {
                         style={{ paddingTop: 20, paddingBottom: 20 }}
                     >
                         <Pressable
-                            onPress={() => navigation.goBack()}
+                            onPress={() => navigation.navigate("MobileAccounting")}
                             style={styles.back}
                         >
                             <Image source={BACK} style={styles.backIcon} />
@@ -33,7 +33,7 @@ export default function AccountMaster({ navigation }: any) {
                     style={styles.add}
                     onPress={() => navigation.navigate("AddAccount")}
                 >
-                    <Text style={styles.plusIcon}>+</Text>          
+                    <Feather name="plus" color="#fff" size={20} />
                 </Pressable>
                 <View style={styles.searchbar}>
                     <TextInput
@@ -385,12 +385,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 3,
-    },
-    plusIcon: {
-        width: 'auto',
-        fontSize: 32,
-        color: COLORS.white,
-        fontWeight: "400"
     },
     bottomModal: {
         justifyContent: 'flex-end',

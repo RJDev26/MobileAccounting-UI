@@ -27,13 +27,19 @@ export default function AccountMaster({ navigation }: any) {
             <Text style={styles.heading}>Voucher Entry</Text>
           </LinearGradient> 
         </SafeAreaView>}
+        <Pressable
+            style={styles.add}
+            onPress={() => navigation.navigate("AddVoucher")}
+        >
+            <Feather name="plus" color="#fff" size={20} />
+        </Pressable>
         <View style={styles.searchbar}>
           <TextInput
               style={styles.input}
               placeholder="Search"
           />
           <Feather name="search" color="#ec7e1d" size={24} style={styles.searchIcon} />
-      </View>
+        </View>
         <ScrollView style={styles.scrollView}>
           <Pressable>
             <View style={styles.whiteCard}>  
@@ -225,6 +231,24 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  add: {
+    backgroundColor: '#cd4a26',
+    width: 48,
+    height: 48,
+    borderRadius: 40,
+    position: 'absolute',
+    right: 16,
+    bottom: 120,
+    zIndex: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   input: {
     backgroundColor: COLORS.white,
