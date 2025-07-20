@@ -29,12 +29,12 @@ export default function AccountMaster({ navigation }: any) {
                         <Text style={styles.heading}>Account Master</Text>
                     </LinearGradient> 
                 </SafeAreaView>}
-                {/* <Pressable
+                <Pressable
                     style={styles.add}
                     onPress={() => navigation.navigate("AddAccount")}
                 >
                     <Text style={styles.plusIcon}>+</Text>          
-                </Pressable> */}
+                </Pressable>
                 <View style={styles.searchbar}>
                     <TextInput
                         style={styles.input}

@@ -7,6 +7,7 @@ import AccountMaster from './component/accountMaster/accountMaster'
 import VoucherEntry from './component/voucherEntry/voucherEntry'
 import AccountList from './component/accountList/accountList'
 import TransactionDetails from './component/transactionDetails/transactionDetails'
+import AddAccount from './component/accountMaster/addAccount'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -14,29 +15,22 @@ const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
-
 export default function App() {
   return (
     <>
       {/* <NavigationContainer>
-        <Stack.Navigator initialRouteName='MobileAccounting'>
+        <Stack.Navigator>
           <Stack.Screen
-            name="MobileAccounting"
-            component={MobileAccounting}
+            name="AddAccount"
+            component={AddAccount}
             options={{
-              headerShown: false
-            }}
-          />
-          <Stack.Screen
-            name="AccountMaster"
-            component={AccountMaster}
-            options={{
-              headerShown: false
+              headerShown: false,
+              navigationBarHidden: true
             }}
           />
         </Stack.Navigator>
       </NavigationContainer> */}
-      <NavigationContainer >
+      <NavigationContainer>
         <Tab.Navigator 
           initialRouteName="MobileAccounting"
           screenOptions={{
@@ -84,7 +78,15 @@ export default function App() {
                 </Text>
               )
             }} 
-          />     
+          />    
+          <Tab.Screen 
+            name="AddAccount" 
+            component={AddAccount}             
+            options={{ 
+              headerShown: false,
+              tabBarStyle: { display: 'none' }
+            }} 
+          />    
           <Tab.Screen 
             name="MobileAccounting" 
             component={MobileAccounting} 
