@@ -36,15 +36,15 @@ interface Account {
 }
 
 export default function AccountMaster({ navigation }: any) {
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [accounts, setAccounts] = useState<Account[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   const fetchAccounts = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await axiosInstance.get(AccountAPIUrls.GET_ALL);       
         
       if (response.data.success) {
