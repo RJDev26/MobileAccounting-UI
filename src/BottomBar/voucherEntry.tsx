@@ -81,7 +81,6 @@ export default function VoucherEntry({ navigation }: any) {
         setVouchers(response.data.data);
       }
     } catch (error) {
-      console.error('Error fetching vouchers:', error);
       Alert.alert('Error', 'Failed to load vouchers');
     } finally {
       setIsLoading(false);
@@ -156,7 +155,6 @@ export default function VoucherEntry({ navigation }: any) {
                 fetchVouchers();
               }
             } catch (error) {
-              console.error('Error deleting voucher:', error);
               Alert.alert('Error', 'Failed to delete voucher');
             } finally {
               setIsLoading(false);

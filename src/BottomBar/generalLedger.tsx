@@ -70,7 +70,6 @@ export default function VoucherLedger({ navigation }: any) {
                 setAccounts(res.data.data);
             }
         } catch (error) {
-            console.error('Error fetching accounts:', error);
             Alert.alert('Error', 'Failed to load accounts');
         }
     };
@@ -135,7 +134,6 @@ export default function VoucherLedger({ navigation }: any) {
                 setLedgerEntries(response.data.data);
             }
         } catch (error) {
-            console.error('Error fetching ledger:', error);
             Alert.alert('Error', 'Failed to load ledger entries');
         } finally {
             setIsLoading(false);

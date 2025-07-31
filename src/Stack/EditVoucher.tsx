@@ -102,7 +102,6 @@ export default function EditVoucher({ navigation }: any) {
                 }
             }
         } catch (error) {
-            console.error('Error fetching data:', error);
             Alert.alert('Error', 'Failed to load data');
         } finally {
             setIsLoading(false);
@@ -172,7 +171,6 @@ export default function EditVoucher({ navigation }: any) {
                 navigation.goBack();
             }
         } catch (error) {
-            console.error('Error saving voucher:', error);
             Alert.alert(
                 'Error',
                 voucherId ? 'Failed to update voucher' : 'Failed to create voucher'

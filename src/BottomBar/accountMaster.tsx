@@ -44,17 +44,13 @@ export default function AccountMaster({ navigation }: any) {
 
   const fetchAccounts = async () => {
     try {
-      console.log();
-
       setLoading(true);
-      const response = await axiosInstance.get(AccountAPIUrls.GET_ALL);
-        
+      const response = await axiosInstance.get(AccountAPIUrls.GET_ALL);       
         
       if (response.data.success) {
         setAccounts(response.data.data);
       }
     } catch (error) {
-      console.error('Error fetching accounts:', error);
       Alert.alert('Error', 'Failed to load accounts');
     } finally {
       setLoading(false);
@@ -70,7 +66,6 @@ export default function AccountMaster({ navigation }: any) {
         fetchAccounts();
       }
     } catch (error) {
-      console.log("Error in delete account", error);
       Alert.alert('Error', 'Failed to delete account');
     }
   };

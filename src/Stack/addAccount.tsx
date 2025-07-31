@@ -49,7 +49,6 @@ export default function AddAccount({ navigation }: any) {
                     { cancelable: true, userInterfaceStyle: 'light' });
             }
         } catch (error) {
-            console.log("Error in add account", error);
             Alert.alert('Error', 'Failed to add account');
         } finally {
             setIsLoading(false);

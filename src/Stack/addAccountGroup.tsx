@@ -24,7 +24,6 @@ export default function AddAccountGroup({ navigation }: any) {
                 groupCode,
                 groupName
             });
-            console.log(res.data);
             
             if (res.data.isSuccess) {
                 navigation.goBack(); 
@@ -36,7 +35,6 @@ export default function AddAccountGroup({ navigation }: any) {
                     { cancelable: true, userInterfaceStyle: 'light' });
             }
         } catch (error) {
-            console.log("Error in add account Group", error);
             Alert.alert('Error', 'Failed to add account Group');
         } finally {
             setIsLoading(false);

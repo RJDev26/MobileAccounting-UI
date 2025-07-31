@@ -29,7 +29,6 @@ export default function AccountGroup({ navigation }: any) {
                 setAccountGroup(res.data.data);
             }
         } catch (error) {
-            console.error('Error fetching accounts:', error);
             Alert.alert('Error', 'Failed to load accounts');
         }finally {
             setLoading(false)

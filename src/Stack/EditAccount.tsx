@@ -71,7 +71,6 @@ export default function EditAccount({ navigation }: any) {
                 navigation.goBack();
             }
         } catch (error) {
-            console.log("Error in Edit account", error);
             Alert.alert('Error', 'Failed to Edit account');
         } finally {
             setIsLoading(false)
@@ -97,7 +96,7 @@ export default function EditAccount({ navigation }: any) {
                 : balance.toFixed(2));
             setValue(accountData.drcr)
         } catch (error) {
-            console.error("Error fetching account:", error);
+            Alert.alert("Error fetching account:");
         } finally {
             setLoading(false);
         }

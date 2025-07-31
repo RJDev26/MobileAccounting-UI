@@ -65,7 +65,6 @@ export default function AddVoucher({ navigation }: any) {
                 setCreditAccounts(allAccounts.filter((acc: Account) => acc.drcr === 'cr'));
             }
         } catch (error) {
-            console.error('Error fetching accounts:', error);
             Alert.alert('Error', 'Failed to load accounts');
         } finally {
             setIsLoading(false);
@@ -125,7 +124,6 @@ export default function AddVoucher({ navigation }: any) {
                 navigation.goBack();
             }
         } catch (error) {
-            console.error('Error creating voucher:', error);
             Alert.alert('Error', 'Failed to create voucher');
         } finally {
             setIsSubmitting(false);

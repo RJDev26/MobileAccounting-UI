@@ -87,7 +87,6 @@ export default function TrailBalance({ navigation }: any) {
         setGroups(res.data.data);
       }
     } catch (error) {
-      console.error('Error fetching groups:', error);
       Alert.alert('Error', 'Failed to load groups');
     }
   };
@@ -124,7 +123,6 @@ export default function TrailBalance({ navigation }: any) {
       setTrailBalanceSummary(response.data.summary)
 
     } catch (error) {
-      console.error('Error fetching ledger:', error)
       Alert.alert('Error', 'Failed to load Trail Balance')
     } finally {
       setIsLoading(false);
