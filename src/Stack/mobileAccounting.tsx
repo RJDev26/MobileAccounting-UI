@@ -1,13 +1,13 @@
 import COLORS from '../../constants/color'
-import { USER, ACCOUNTMASTER, VOUCHER, TRANSACTION, CONFIRM, AUDIT, ACCOUNTGROUP } from '../../utils/imagePath'
+import { USER, ACCOUNTMASTER, VOUCHER, TRANSACTION, CONFIRM, AUDIT, ACCOUNTGROUP, LEDGER } from '../utils/imagePath'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Pressable, StyleSheet, Text, View, ScrollView, Image } from 'react-native'
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 export default function MobileAccounting({ navigation }: any) {
   return (
     <>        
-      <SafeAreaProvider>
+      
         {<SafeAreaView style={styles.container} edges={['top']}>
             <LinearGradient
               colors={['#ec7d20', '#be2b2c']}
@@ -19,19 +19,6 @@ export default function MobileAccounting({ navigation }: any) {
             </LinearGradient> 
             <ScrollView style={styles.scrollView}>
               <View style={styles.wrap}>
-                <View style={styles.cardView}>
-                  <LinearGradient
-                    colors={['#fff4ec', '#f3f8fb']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={{ paddingTop: 16, paddingRight: 12, paddingBottom: 16, paddingLeft: 12, borderRadius: 7 }}
-                  >
-                    <View style={styles.iconCircle}>
-                      <Image source={USER} style={styles.icon} />
-                    </View>
-                    <Text style={styles.subheading}>{"User \n Management"}</Text>
-                  </LinearGradient>
-                </View>  
                 <View style={styles.cardView}>
                   <Pressable
                     onPress={() => navigation.navigate("AccountMaster")}
@@ -62,7 +49,7 @@ export default function MobileAccounting({ navigation }: any) {
                       <View style={styles.iconCircle}>
                         <Image source={VOUCHER} style={styles.icon} />
                       </View>
-                      <Text style={styles.subheading}>{"Voucher \n Entry"}</Text>
+                      <Text style={styles.subheading}>Voucher Entry</Text>
                     </LinearGradient>
                   </Pressable>
                 </View>  
@@ -76,7 +63,7 @@ export default function MobileAccounting({ navigation }: any) {
                     <View style={styles.iconCircle}>
                       <Image source={TRANSACTION} style={styles.icon} />
                     </View>
-                    <Text style={styles.subheading}>Transaction Details</Text>
+                    <Text style={styles.subheading}>Transactions</Text>
                   </LinearGradient>
                 </View>  
                 <View style={styles.cardView}>
@@ -89,7 +76,7 @@ export default function MobileAccounting({ navigation }: any) {
                     <View style={styles.iconCircle}>
                       <Image source={CONFIRM} style={styles.icon} />
                     </View>
-                    <Text style={styles.subheading}>{"Confirm \n Entry"}</Text>
+                    <Text style={styles.subheading}>Confirm Entry</Text>
                   </LinearGradient>
                 </View>  
                 <View style={styles.cardView}>
@@ -102,21 +89,25 @@ export default function MobileAccounting({ navigation }: any) {
                     <View style={styles.iconCircle}>
                       <Image source={AUDIT} style={styles.icon} />
                     </View>
-                    <Text style={styles.subheading}>{"Audit \n Logs"}</Text>
+                    <Text style={styles.subheading}>Audit Logs</Text>
                   </LinearGradient>
                 </View>    
                 <View style={styles.cardView}>
-                  <LinearGradient
-                    colors={['#fff4ec', '#f3f8fb']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={{ paddingTop: 16, paddingRight: 12, paddingBottom: 16, paddingLeft: 12, borderRadius: 7 }}
+                  <Pressable
+                    onPress={() => navigation.navigate("AccountGroup")}
                   >
-                    <View style={styles.iconCircle}>
-                      <Image source={ACCOUNTGROUP} style={styles.icon} />
-                    </View>
-                    <Text style={styles.subheading}>Account Group Master</Text>
-                  </LinearGradient>
+                    <LinearGradient
+                      colors={['#fff4ec', '#f3f8fb']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{ paddingTop: 16, paddingRight: 12, paddingBottom: 16, paddingLeft: 12, borderRadius: 7 }}
+                    >
+                      <View style={styles.iconCircle}>
+                        <Image source={ACCOUNTGROUP} style={styles.icon} />
+                      </View>
+                      <Text style={styles.subheading}>Account Group</Text>
+                    </LinearGradient>
+                  </Pressable>
                 </View>
                 <View style={styles.cardView}>
                   <LinearGradient
@@ -128,13 +119,30 @@ export default function MobileAccounting({ navigation }: any) {
                     <View style={styles.iconCircle}>
                       <Image source={USER} style={styles.icon} />
                     </View>
-                    <Text style={styles.subheading}>Account Group Details</Text>
+                    <Text style={styles.subheading}>Groups Details</Text>
                   </LinearGradient>
-                </View>            
+                </View>    
+                <View style={styles.cardView}>
+                  <Pressable
+                    onPress={() => navigation.navigate("GeneralLedger")}
+                  >
+                    <LinearGradient
+                      colors={['#fff4ec', '#f3f8fb']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{ paddingTop: 16, paddingRight: 12, paddingBottom: 16, paddingLeft: 12, borderRadius: 7 }}
+                    >
+                      <View style={styles.iconCircle}>
+                        <Image source={LEDGER} style={styles.icon} />
+                      </View>
+                      <Text style={styles.subheading}>General Ledger</Text>
+                    </LinearGradient>
+                  </Pressable>
+                </View>         
               </View>
             </ScrollView>
         </SafeAreaView>}
-      </SafeAreaProvider>       
+     
     </>
   )
 }
@@ -147,7 +155,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   container: {
-    backgroundColor: COLORS.black,
     paddingTop: 0,
   },
   scrollView: {
@@ -165,7 +172,10 @@ const styles = StyleSheet.create({
   },
   cardView: {
     width: '33%',
-    padding: 8
+    paddingTop: 8,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingBottom: 8,
   },
   iconCircle: {
     backgroundColor: COLORS.white,

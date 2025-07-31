@@ -1,68 +1,45 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import COLORS from '../../constants/color'
 import { Pressable, StyleSheet, Text, TextInput, View, ScrollView, Image, Alert } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import { BACK } from '../utils/imagePath'
 import { LinearGradient } from 'expo-linear-gradient'
-import { RadioButton } from 'react-native-paper'
 import axiosInstance from '../config/axios'
-import { AccountAPIUrls } from '../services/api'
+import { accountGroupApiUrls } from '../services/api'
 
-export default function AddAccount({ navigation }: any) {
-    const [value, setValue] = useState('cr');
-    const [shortCode, setShortCode] = useState('');
-    const [name, setName] = useState('');
-    const [openingBalance, setOpeningBalance] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+export default function AddAccountGroup({ navigation }: any) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [groupCode, setGroupCode] = useState('')
+    const [groupName, setGroupName] = useState('')
 
-    const addAccountHandler = async () => {
-        if (!shortCode || !name || !openingBalance) {
+    const addAccountGroupHandler = async () => {
+        if (!groupCode || !groupName) {
             Alert.alert('Error', 'Please fill all fields');
             return;
         }
 
-
-        const balance = parseFloat(openingBalance);
-        if (isNaN(balance)) {
-            Alert.alert('Error', 'Please enter a valid opening balance');
-            return;
-        }
-
-
         try {
             setIsLoading(true);
-            const res = await axiosInstance.post(AccountAPIUrls.CREATE, {
-                shortCode,
-                name,
-                drcr: value,
-                openingBalance,
-                createdBy: 1,
-                createdAt: new Date().toISOString()
+            const res = await axiosInstance.post(accountGroupApiUrls.CREATE, {
+                groupCode,
+                groupName
             });
-            if (res.data.success) {
-                navigation.goBack();
+            console.log(res.data);
+            
+            if (res.data.isSuccess) {
+                navigation.goBack(); 
             } else {
                 Alert.alert(
-                    'Duplicate Short Code',
-                    'The short code you entered already exists. Please use a different one.',
+                    'Duplicate Field',
+                     res.data.message,
                     [{ text: 'OK', style: 'default' }],
                     { cancelable: true, userInterfaceStyle: 'light' });
             }
         } catch (error) {
-            console.log("Error in add account", error);
-            Alert.alert('Error', 'Failed to add account');
+            console.log("Error in add account Group", error);
+            Alert.alert('Error', 'Failed to add account Group');
         } finally {
             setIsLoading(false);
-        }
-    }
-
-    const handleOpeningBalanceChange = (text: string) => {
-        setOpeningBalance(text);
-    }
-
-    const handleOpeningBalanceBlur = () => {
-        if (openingBalance && !openingBalance.includes('.')) {
-            setOpeningBalance(`${openingBalance.replace(/[^0-9]/g, '')}.00`);
         }
     }
 
@@ -81,58 +58,31 @@ export default function AddAccount({ navigation }: any) {
                     >
                         <Image source={BACK} style={styles.backIcon} />
                     </Pressable>
-                    <Text style={styles.heading}>Add Account</Text>
+                    <Text style={styles.heading}>Add Account Group</Text>
                 </LinearGradient>
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.whiteCard}>
                         <View style={styles.gap}>
-                            <Text style={styles.label}>Short Code</Text>
+                            <Text style={styles.label}>Group Code</Text>
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Enter Short Code"
-                                    value={shortCode}
-                                    onChangeText={setShortCode}
+                                    placeholder="Enter Group Code"
+                                    value={groupCode}
+                                    onChangeText={setGroupCode}
                                 />
                             </View>
                         </View>
                         <View style={styles.gap}>
-                            <Text style={styles.label}>Name</Text>
+                            <Text style={styles.label}>Group Name</Text>
                             <View>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="eg. John Doe"
-                                    value={name}
-                                    onChangeText={setName}
+                                    placeholder="Enter Name"
+                                    value={groupName}
+                                    onChangeText={setGroupName}
                                 />
                             </View>
-                        </View>
-                        <View style={styles.gap}>
-                            <Text style={styles.label}>Opening Balance</Text>
-                            <View>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="eg. 25,000.00"
-                                    value={openingBalance}
-                                    onChangeText={handleOpeningBalanceChange}
-                                    onBlur={handleOpeningBalanceBlur}
-                                    keyboardType="numeric"
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.gap}>
-                            <RadioButton.Group onValueChange={setValue} value={value}>
-                                <View style={styles.radioGroup}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <RadioButton value="cr" color="#ec7d20" />
-                                        <Text>Credit</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <RadioButton value="dr" color="#ec7d20" />
-                                        <Text>Debit</Text>
-                                    </View>
-                                </View>
-                            </RadioButton.Group>
                         </View>
                         <LinearGradient
                             colors={['#ec7d20', '#be2b2c']}
@@ -142,12 +92,12 @@ export default function AddAccount({ navigation }: any) {
                         >
                             <Pressable
                                 style={styles.addButton}
-                                onPress={addAccountHandler}
+                                onPress={addAccountGroupHandler}
                                 disabled={isLoading}
                             >
                                 <View>
                                     <Text style={styles.buttonText}>
-                                        {isLoading ? 'Processing...' : 'Submit'}
+                                        Submit
                                     </Text>
                                 </View>
                             </Pressable>
@@ -158,7 +108,6 @@ export default function AddAccount({ navigation }: any) {
         </>
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -184,7 +133,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         backgroundColor: COLORS.grey,
-        height: '100%',
+        height: '100%',    
         paddingTop: 16,
         paddingLeft: 16,
         paddingRight: 16,
@@ -192,7 +141,7 @@ const styles = StyleSheet.create({
     },
     whiteCard: {
         backgroundColor: COLORS.white,
-        width: '100%',
+        width: '100%',    
         paddingTop: 16,
         paddingLeft: 16,
         paddingRight: 16,
@@ -223,15 +172,10 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         paddingRight: 12,
     },
-    radioGroup: {
-        gap: 16,
-        flexDirection: 'row',
-        display: 'flex'
-    },
     addButton: {
         width: '100%',
         height: 48,
-        color: COLORS.white,
+        color: COLORS.white,        
         borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',

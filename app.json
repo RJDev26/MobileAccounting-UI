@@ -4,26 +4,53 @@
     "slug": "MobileAccounting",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./src/assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "build": {
+        "image": {
+          "enableAnimation": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/icon.jpeg",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.puneesh.MobileAccounting",
+      "build": {
+        "image": {
+          "enableAnimation": true
+        }
+      }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f2a2a45a-4ed8-4358-95b7-1326e0655e0e"
+      }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "maruf-f9"
+        }
+      ],
+      "expo-router"
+    ]
   }
 }

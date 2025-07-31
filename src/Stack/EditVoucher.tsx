@@ -19,6 +19,13 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import COLORS from '../../constants/color';
 import { AccountAPIUrls, voucherApiUrls } from '../services/api';
 import axiosInstance from '../config/axios';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import Loader from '../component/Loader';
+
+// Define types
+type EditVoucherRouteParams = {
+    voucherId: number;
+};
 
 interface Account {
     accountId: number;
@@ -28,53 +35,84 @@ interface Account {
 }
 
 interface VoucherData {
+    voucherId?: number;
     voucherDate: string;
     voucherType: string;
+    createdBy: number;
     drAccountId: number;
     crAccountId: number;
     amount: string;
     narration: string;
-    createdBy: number;
 }
 
-export default function AddVoucher({ navigation }: any) {
-    const [accounts, setAccounts] = useState<Account[]>([])
-    const [debitAccounts, setDebitAccounts] = useState<Account[]>([])
-    const [creditAccounts, setCreditAccounts] = useState<Account[]>([])
+export default function EditVoucher({ navigation }: any) {
+    const route = useRoute<RouteProp<{ params: EditVoucherRouteParams }, 'params'>>();
+    const { voucherId } = route.params;
+
+    const [accounts, setAccounts] = useState<Account[]>([]);
+    const [debitAccounts, setDebitAccounts] = useState<Account[]>([]);
+    const [creditAccounts, setCreditAccounts] = useState<Account[]>([]);
     const [formData, setFormData] = useState<VoucherData>({
         voucherDate: new Date().toISOString(),
         voucherType: '',
+        createdBy: 1,
         drAccountId: 0,
         crAccountId: 0,
-        amount: '',
-        narration: '',
-        createdBy: 1
+        amount: "",
+        narration: ''
     });
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const fetchAccounts = async () => {
+
+    const fetchData = async () => {
+
         try {
             setIsLoading(true);
-            const response = await axiosInstance.get(AccountAPIUrls.GET_ALL);
-            if (response.data.success) {
-                const allAccounts = response.data.data;
+            const accountsResponse = await axiosInstance.get(AccountAPIUrls.GET_ALL);
+            if (accountsResponse.data.success) {
+                const allAccounts = accountsResponse.data.data;
                 setAccounts(allAccounts);
                 setDebitAccounts(allAccounts.filter((acc: Account) => acc.drcr === 'dr'));
                 setCreditAccounts(allAccounts.filter((acc: Account) => acc.drcr === 'cr'));
             }
+
+            if (voucherId) {
+                const voucherResponse = await axiosInstance.get(
+                    `${voucherApiUrls.GET_SINGLE}/${voucherId}`
+                );
+                if (voucherResponse.data) {
+                    const voucher = voucherResponse.data.data;
+
+                    const formattedAmount = voucher.amount.toString().includes('.')
+                        ? voucher.amount.toString()
+                        : `${voucher.amount}.00`;
+                    setFormData({
+                        voucherId: voucher.voucherId,
+                        voucherDate: voucher.date || new Date().toISOString(),
+                        voucherType: voucher.voucherType,
+                        createdBy: voucher.createdBy,
+                        drAccountId: voucher.drAccountId,
+                        crAccountId: voucher.crAccountId,
+                        amount: formattedAmount,
+                        narration: voucher.narration
+                    });
+
+                }
+            }
         } catch (error) {
-            console.error('Error fetching accounts:', error);
-            Alert.alert('Error', 'Failed to load accounts');
+            console.error('Error fetching data:', error);
+            Alert.alert('Error', 'Failed to load data');
         } finally {
             setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchAccounts();
-    }, []);
+
+        fetchData();
+    }, [voucherId]);
 
     const showDatePicker = () => setDatePickerVisibility(true);
     const hideDatePicker = () => setDatePickerVisibility(false);
@@ -106,12 +144,14 @@ export default function AddVoucher({ navigation }: any) {
             Alert.alert('Error', 'Please select credit account');
             return;
         }
-        const amountValue = parseFloat(formData.amount);
+        const amountValue = parseFloat(
+            formData.amount.toString().replace(/\.00$/, '')
+        );
 
         if (isNaN(amountValue) || amountValue <= 0) {
             Alert.alert('Error', 'Please enter valid amount');
             return;
-        } 
+        }
         const submissionData = {
             ...formData,
             amount: amountValue
@@ -119,14 +159,24 @@ export default function AddVoucher({ navigation }: any) {
 
         try {
             setIsSubmitting(true);
-            const response = await axiosInstance.post(voucherApiUrls.CREATE, submissionData);
+            const response = await axiosInstance.post(
+                voucherApiUrls.UPDATE,
+                submissionData
+            );
+
             if (response.data) {
-                Alert.alert('Success', 'Voucher created successfully');
+                Alert.alert(
+                    'Success',
+                    'Voucher updated successfully'
+                );
                 navigation.goBack();
             }
         } catch (error) {
-            console.error('Error creating voucher:', error);
-            Alert.alert('Error', 'Failed to create voucher');
+            console.error('Error saving voucher:', error);
+            Alert.alert(
+                'Error',
+                voucherId ? 'Failed to update voucher' : 'Failed to create voucher'
+            );
         } finally {
             setIsSubmitting(false);
         }
@@ -151,10 +201,12 @@ export default function AddVoucher({ navigation }: any) {
                 <Pressable onPress={() => navigation.goBack()} style={styles.back}>
                     <Image source={BACK} style={styles.backIcon} />
                 </Pressable>
-                <Text style={styles.heading}>Add Voucher</Text>
+                <Text style={styles.heading}>
+                    Edit Voucher
+                </Text>
             </LinearGradient>
 
-            <ScrollView style={styles.scrollView}>
+            {isLoading ? <Loader /> : <ScrollView style={styles.scrollView}>
                 <View style={styles.whiteCard}>
                     {/* Voucher Type */}
                     <View style={styles.gap}>
@@ -191,6 +243,7 @@ export default function AddVoucher({ navigation }: any) {
                             onConfirm={handleDateConfirm}
                             onCancel={hideDatePicker}
                             maximumDate={new Date()}
+                            date={new Date(formData.voucherDate)}
                         />
                     </View>
 
@@ -242,24 +295,39 @@ export default function AddVoucher({ navigation }: any) {
                         <TextInput
                             style={styles.input}
                             placeholder="Enter Amount"
-                            value={formData.amount.toString()} 
+                            value={formData.amount}
                             onChangeText={(text) => {
-                                const cleanValue = text.replace(/[^0-9]/g, '');
+
+                                const cleanValue = text
+                                    .replace(/[^0-9.]/g, '')
+                                    .replace(/(\..*)\./g, '$1')
+                                    .replace(/^0+(\d)/, '$1');
+
                                 setFormData({
                                     ...formData,
-                                    amount: cleanValue || '' 
+                                    amount: cleanValue
                                 });
                             }}
                             onBlur={() => {
-                                if (formData.amount && formData.amount !== '0') {
+
+                                if (formData.amount && !formData.amount.includes('.')) {
                                     setFormData({
                                         ...formData,
                                         amount: `${formData.amount}.00`
+                                    });
+                                } else if (formData.amount.includes('.')) {
+
+                                    const parts = formData.amount.split('.');
+                                    const decimalPart = parts[1]?.slice(0, 2).padEnd(2, '0');
+                                    setFormData({
+                                        ...formData,
+                                        amount: `${parts[0]}.${decimalPart}`
                                     });
                                 }
                             }}
                             keyboardType="numeric"
                         />
+
                     </View>
 
                     {/* Narration */}
@@ -289,15 +357,18 @@ export default function AddVoucher({ navigation }: any) {
                             {isSubmitting ? (
                                 <ActivityIndicator color="white" />
                             ) : (
-                                <Text style={styles.buttonText}>Submit</Text>
+                                <Text style={styles.buttonText}>
+                                    {voucherId ? 'Update Voucher' : 'Create Voucher'}
+                                </Text>
                             )}
                         </Pressable>
                     </LinearGradient>
                 </View>
-            </ScrollView>
+            </ScrollView>}
         </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -322,7 +393,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     scrollView: {
-        backgroundColor: COLORS.grey,
+        backgroundColor: COLORS.lightBlue,
         height: '100%',
         paddingTop: 16,
         paddingLeft: 16,

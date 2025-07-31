@@ -1,0 +1,52 @@
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "SENTRY_ENVIRONMENT": "preview",
+        "SENTRY_ENABLE": "true"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "SENTRY_ENVIRONMENT": "preview",
+        "SENTRY_ENABLE": "true"
+      }
+    },
+    "preview3": {
+      "developmentClient": true,
+      "env": {
+        "SENTRY_ENVIRONMENT": "development",
+        "SENTRY_ENABLE": "false"
+      }
+    },
+    "preview4": {
+      "distribution": "internal",
+      "env": {
+        "SENTRY_ENVIRONMENT": "staging",
+        "SENTRY_ENABLE": "true"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "SENTRY_ENVIRONMENT": "production",
+        "SENTRY_ENABLE": "true",
+        "SENTRY_AUTH_TOKEN": "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",
+        "SENTRY_ORG": "maruf-f9",
+        "SENTRY_PROJECT": "react-native",
+        "SENTRY_DSN": "https://66eebed4bfec45895342e29224fb6c30@o4509707199053824.ingest.us.sentry.io/4509707204624384"
+      }
+    }
+  },
+  "cli": {
+    "version": ">= 6.0.0"
+  }
+}
