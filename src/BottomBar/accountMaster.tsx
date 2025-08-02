@@ -1,14 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import COLORS from '../../constants/color';
 import {
   Pressable,
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Image,
   TextInput,
-  ActivityIndicator,
   Alert,
   FlatList
 } from 'react-native';
@@ -70,10 +68,13 @@ export default function AccountMaster({ navigation }: any) {
     }
   };
 
-  const filteredAccounts = accounts.filter(account =>
-    account.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    account.shortCode.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredAccounts = useMemo(() => {
+    const query = searchQuery.toLowerCase();
+    return accounts.filter(account =>
+      account.name.toLowerCase().includes(query) ||
+      account.shortCode.toLowerCase().includes(query)
+    );
+  }, [accounts, searchQuery]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -90,10 +91,10 @@ export default function AccountMaster({ navigation }: any) {
     return colors[index % colors.length];
   };
 
-  const handleAccountPress = (account: Account) => {
+  const handleAccountPress = useCallback((account: Account) => {
     setSelectedAccount(account);
     setIsVisible(true);
-  };
+  }, []);
 
   const getArrowIcon = (drcr: string) => {
     return drcr === "dr" ? UPARROW : DOWNARROW;
@@ -107,6 +108,27 @@ export default function AccountMaster({ navigation }: any) {
     useCallback(() => {
       fetchAccounts();
     }, [])
+  );
+
+  const renderItem = useCallback(
+    ({ item, index }: { item: Account; index: number }) => (
+      <Pressable key={item.accountId} onPress={() => handleAccountPress(item)}>
+        <View style={styles.whiteCard}>
+          <View style={[styles.circle, { backgroundColor: getCircleColor(index) }]}>
+            <Text style={styles.alphanumeric}>{getInitial(item.name)}</Text>
+          </View>
+          <Text style={styles.name}>{item.name}</Text>
+          <View style={styles.spaceBetween}>
+            <Text style={styles.shortCode}>{item.shortCode}</Text>
+            <Text style={styles.amoumt}>
+              <Image source={getArrowIcon(item.drcr)} style={styles.upArrow} />
+              {' '}{formatCurrency(item.openingBalance)}
+            </Text>
+          </View>
+        </View>
+      </Pressable>
+    ),
+    [handleAccountPress]
   );
 
   return (
@@ -149,30 +171,7 @@ export default function AccountMaster({ navigation }: any) {
         <FlatList
           data={filteredAccounts}
           keyExtractor={(item) => item.accountId.toString()}
-          renderItem={({ item, index }) => (
-            <Pressable
-              key={item.accountId}
-              onPress={() => handleAccountPress(item)}
-            >
-              <View style={styles.whiteCard}>
-                <View style={[styles.circle, { backgroundColor: getCircleColor(index) }]}>
-                  <Text style={styles.alphanumeric}>{getInitial(item.name)}</Text>
-                </View>
-                <Text style={styles.name}>{item.name}</Text>
-                <View style={styles.spaceBetween}>
-                  <Text style={styles.shortCode}>{item.shortCode}</Text>
-                  <Text style={styles.amoumt}>
-                    {/* CORRECTED ARROW USAGE */}
-                    <Image
-                      source={getArrowIcon(item.drcr)}
-                      style={styles.upArrow}
-                    /> &nbsp;
-                    {formatCurrency(item.openingBalance)}
-                  </Text>
-                </View>
-              </View>
-            </Pressable>
-          )}
+          renderItem={renderItem}
           initialNumToRender={20} // Only render 20 items initially
           maxToRenderPerBatch={10} // Render 10 more at a time when scrolling
           windowSize={10} // Reduce memory usage
@@ -212,7 +211,7 @@ export default function AccountMaster({ navigation }: any) {
                   <Image
                     source={getArrowIcon(selectedAccount.drcr)}
                     style={styles.upArrow}
-                  /> &nbsp;
+                  />{' '}
                   {formatCurrency(selectedAccount.openingBalance)}
                 </Text>
               </View>
