@@ -5,14 +5,11 @@ import AccountMaster from '../BottomBar/accountMaster'
 import VoucherEntry from '../BottomBar/voucherEntry'
 import GeneralLedger from '../BottomBar/generalLedger'
 import TrailBalance from '../BottomBar/TrailBalance'
+import Accounts from '../BottomBar/Accounts'
 import { LinearGradient } from 'expo-linear-gradient'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-
 const Tab = createBottomTabNavigator();
-
-
-
 
 function TabNavigator() {
   return (
@@ -88,7 +85,6 @@ function TabNavigator() {
               <View>
                 <Image source={DASHBOARD_WHITE} style={styles.menuIcon} />
               </View>
-              {/* <Text>Dashboard</Text> */}
             </LinearGradient>
           )
         }}
@@ -123,13 +119,26 @@ function TabNavigator() {
           )
         }}
       />
+      <Tab.Screen
+        name="Calc"
+        component={Accounts}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <Image source={focused ? ACCOUNTMASTER : ACCOUNTMASTER_GREY} style={styles.menuIcon} />
+          ),
+          tabBarLabel: ({ focused, color }) => (
+            <Text style={{ color: focused ? '#cd4a26' : '#979797', fontSize: focused ? 11 : 10, marginTop: 4 }}>
+              Calc.
+            </Text>
+          )
+        }}
+      />
     </Tab.Navigator>
   )
 }
 
-
 export default TabNavigator
-
 
 const styles = StyleSheet.create({
   container: {
@@ -142,4 +151,4 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30
   }
-});
+})
